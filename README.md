@@ -1,6 +1,6 @@
-# 📚 1º Semestre - Engenharia de Software
+# 📚 Curso de Engenharia de Software
 
-Este repositório contém projetos e atividades realizadas durante o primeiro semestre do curso de **Engenharia de Software**. O objetivo deste repositório é armazenar e organizar os projetos desenvolvidos, permitindo o acompanhamento do meu progresso ao longo do curso.
+Este repositório contém projetos e atividades realizadas durante o curso de **Engenharia de Software**. O objetivo deste repositório é armazenar e organizar os projetos desenvolvidos, permitindo o acompanhamento do meu progresso ao longo do curso.
 
 ## 🚀 Tecnologias Utilizadas
 
