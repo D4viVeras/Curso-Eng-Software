@@ -1,171 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>Quiz Brabo</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-         <a href="#" class="logo">Quiz.</a>
-        <nav class="navbar">
-            <a href="#" class="nav-home">Home</a>
-            <a href="#" class="nav-about">Sobre</a>
-            <a href="#" class="nav-services">Serviços</a>
-            <a href="#" class="nav-contact">Contato</a>
-        </nav>
+
+    <header class="main-header">
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showScreen('home-screen')">Quiz<span class="dot">.</span></a>
+            
+            <nav class="navbar">
+                <div class="search-box">
+                    <input type="text" class="search-txt" placeholder="Buscar quiz...">
+                    <a class="search-btn" href="#">🔍</a>
+                </div>
+
+                <button id="theme-toggle" class="theme-btn">🌙</button>
+
+                <a href="#" onclick="showScreen('home-screen')">Home</a>
+                <a href="#" class="open-modal" data-modal="modal-about">Sobre</a>
+                <a href="#" class="open-modal btn-contact" data-modal="modal-contact">Contato</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="main">
-        <div class="container">
-            <section class="quiz-section">
-                <div class="quiz-box"> 
-                    <h1>Quiz Brabo</h1>
-                    <div class="quiz-header">
-                        <span>Quiz</span>
-                        <span class="header-score">Score: 0 / 10</span>
-                    </div>
-                    <h2 class="question-text">Carregando pergunta...</h2>
+    <main class="game-wrapper">
+        
+        <div id="home-screen" class="screen active">
+            <div class="hero-text">
+                <h1>Desafie seu<br>Conhecimento.</h1>
+                <p>Escolha sua stack e prove que você é brabo.</p>
+            </div>
 
-                    <div class="option-list"></div>
-
-                    <div class="quiz-footer">
-                        <span class="question-total">1 de 10 Perguntas</span>
-                        <button class="next-btn">Próxima</button>
+            <div class="category-grid" id="quiz-grid">
+                
+                <div class="card" onclick="startGame('html')" data-name="html">
+                    <div class="icon">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
                     </div>
+                    <h3>HTML5</h3>
+                    <p>Estrutura & Semântica</p>
                 </div>
 
-                <div class="result-box">
-                    <h2>Resultado</h2>
-                    <div class="percentage-container">
-                        <div class="circular-progress">
-                            <span class="progress-value">0%</span>
-                        </div>
-
-                        <span class="score-text">Sua pontuação é 0 de 10</span>
+                <div class="card" onclick="startGame('css')" data-name="css">
+                    <div class="icon">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
                     </div>
-
-                    <div class="buttons">
-                        <button class="tryAgain-btn">Tente de Novo</button>
-                        <button class="goHome-btn">Volte para Home</button>
-                    </div>
+                    <h3>CSS3</h3>
+                    <p>Estilo & Layout</p>
                 </div>
-            </section>    
+
+                <div class="card" onclick="startGame('js')" data-name="javascript js">
+                    <div class="icon">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS">
+                    </div>
+                    <h3>JavaScript</h3>
+                    <p>Lógica & DOM</p>
+                </div>
+            </div>
             
-            <section class="home">
-                <div class="home-content">
-                    <h1>Quiz</h1>
-                    <p>Teste seus conhecimentos de forma rápida e divertida! Selecionamos algumas perguntas essenciais sobre o desenvolvimento web. Use seu conhecimentos para interagir com o quiz e veja sua pontuação no final. Pronto para o desafio?</p>
-                    <button class="start-btn">Começar Quiz</button>
-                </div>
-            </section>
+            <p id="no-results" style="display: none; text-align: center; color: var(--mid-grey); margin-top: 20px;">Nenhum quiz encontrado.</p>
         </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-container">
+                <header class="quiz-head">
+                    <span id="category-badge">CATEGORIA</span>
+                    <span id="score-display">Score: 0</span>
+                </header>
+                
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+
+                <div class="question-box">
+                    <h2 id="question-text">Carregando...</h2>
+                </div>
+
+                <div id="options-container" class="options-list"></div>
+
+                <footer class="quiz-foot">
+                    <span id="question-counter">1 / 5</span>
+                    <button id="next-btn" class="btn-black" disabled>Próxima Pergunta</button>
+                </footer>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-box">
+                <h2 style="margin-bottom: 30px;">Resultado</h2>
+                
+                <div class="circular-progress">
+                    <svg class="progress-ring" width="180" height="180">
+                        <circle class="progress-ring__circle-bg" 
+                                stroke="var(--light-grey)" 
+                                stroke-width="15" 
+                                fill="transparent" 
+                                r="70" cx="90" cy="90"/>
+                        <circle class="progress-ring__circle" 
+                                stroke="var(--black)" 
+                                stroke-width="15" 
+                                fill="transparent" 
+                                r="70" cx="90" cy="90"/>
+                    </svg>
+                    <div class="progress-value">0%</div>
+                </div>
+
+                <p class="result-total">
+                    Sua pontuação é <span id="final-score">0</span> de <span id="total-questions">0</span>
+                </p>
+                
+                <div class="result-actions">
+                    <button id="restart-btn" class="btn-black">Tente de Novo</button>
+                    <button id="home-btn" class="btn-outline">Volte para Home</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <div class="popup-info">
-        <h2>Guia do Quiz</h2>
-        <span class="info">1. Leia atentamente a pergunta que aparece na tela. 📖</span>
-        <br><span class="info">2. Marque a resposta certa.✅</span>
-         <br><span class="info">3. Acerte a questão. 🎉</span>
-        <br><span class="info">4. Veja o seu resultado.😃</span>
-        <br><span class="info">5. Seja feliz. 🤪</span>
-
-        <div class="btn-group">
-            <button class="info-btn exit-btn">Desistir</button>
-            <a href="#" class="info-btn continue-btn">Continuar</a>
-        </div>
-    </div>
-
-    <div class="popup-info popup-home">
-        <h2>🏠 Home Sweet Home</h2>
-        <span class="info">Você já está na página inicial!</span>
-        <br><span class="info">Aqui é onde a mágica acontece. Prepare seu café, ajuste a cadeira e clique em "Começar Quiz" para provar que você sabe tudo de Web Dev.</span>
-        
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Bora!</button>
-        </div>
-    </div>
-
-    <div class="popup-info popup-about">
-        <h2>🤠 Sobre Nós</h2>
-        <span class="info">O <strong>Quiz Brabo</strong> foi desenvolvido com muito café e CSS Puro.</span>
-        <br><span class="info">Nossa missão: Fazer você decorar tags HTML na força do ódio (brincadeira, é com amor).</span>
-        <br><span class="info">Versão: 1.0.0 (A melhor de todas).</span>
-        
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Legal</button>
-        </div>
-    </div>
-
-    <div class="popup-info popup-services">
-        <h2>🛠️ Nossos Serviços</h2>
-        <span class="info">O que fazemos por você:</span>
-        <br><span class="info">1. Testamos sua paciência.</span>
-        <br><span class="info">2. Ensinamos JavaScript na prática.</span>
-        <br><span class="info">3. Entregamos pizzas (em breve).</span>
-        <br><span class="info">4. Criamos bugs para você corrigir.</span>
-        
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Contratar</button>
-        </div>
-    </div>
-
-    <div class="popup-info popup-privacy">
-        <h2>🔒 Privacidade</h2>
-        <span class="info">Aqui no Quiz Brabo a privacidade é levada a sério.</span>
-        <br><span class="info">1. Não coletamos seu nome.</span>
-        <br><span class="info">2. Não coletamos dados bancários.</span>
-        <br><span class="info">3. A única coisa que roubamos é seu tempo.</span>
-        
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Entendi</button>
-        </div>
-    </div>
-
-    <div class="popup-info popup-terms">
-        <h2>📜 Termos de Uso</h2>
-        <span class="info">Ao jogar este quiz, você concorda que:</span>
-        <br><span class="info">1. O desenvolvedor é brabo.</span>
-        <br><span class="info">2. Se errar, a culpa é sua.</span>
-        <br><span class="info">3. É proibido usar o Google.</span>
-        <br><span class="info">4. Reclamações serão ignoradas.</span>
-
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Aceito</button>
-        </div>
-    </div>
-
-    <div class="popup-info popup-contact">
-        <h2>📞 Contato</h2>
-        <span class="info">Quer falar com a gente?</span>
-        <br><br>
-        <span class="info">📧 Email: davi@quizbrabo.com</span>
-        <br><span class="info">📱 Zap: (00) 99999-9999</span>
-        <br><span class="info">📷 Insta: @daviveras</span>
-        
-        <div class="btn-group">
-            <button class="info-btn close-popup-btn">Fechar</button>
-        </div>
-    </div>
-
-    <footer class="footer">
+    <footer class="main-footer">
         <div class="footer-content">
-            <p>&copy; 2025 Quiz Brabo. Todos os direitos reservados.</p>
-            <div class="social-links">
-                <a href="#" class="link-privacy">Privacidade</a>
-                <a href="#" class="link-terms">Termos</a>
-                <a href="#" class="link-contact">Contato</a>
+            <p>&copy; 2025 Quiz Brabo Inc.</p>
+            <div class="socials">
+                <a href="#" class="open-modal" data-modal="modal-privacy">Privacidade</a>
+                <a href="#" class="open-modal" data-modal="modal-terms">Termos</a>
+                <a href="#" class="open-modal" data-modal="modal-contact">Contato</a>
             </div>
         </div>
     </footer>
 
+    <div id="modal-about" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header-icon">🤓</div>
+            <h2>Sobre Nós</h2>
+            <p>O <strong>Quiz Brabo</strong> foi desenvolvido com muito café e CSS Puro.</p>
+            <p>Nossa missão: Fazer você decorar tags HTML na força do ódio (brincadeira, é com amor).</p>
+            <p>Versão: 1.0.0 (A melhor de todas).</p>
+            <button class="btn-modal-action close-modal-action">Legal</button>
+        </div>
+    </div>
+
+    <div id="modal-contact" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header-icon">📞</div>
+            <h2>Contato</h2>
+            <p>Quer falar com a gente?</p>
+            <div class="contact-list">
+                <div class="contact-item"><span>📧</span> Email: davi@quizbrabo.com</div>
+                <div class="contact-item"><span>📱</span> Zap: (00) 99999-9999</div>
+                <a href="https://instagram.com" target="_blank" class="contact-item" style="text-decoration: none;">
+                    <span>📷</span> Instagram
+                </a>
+            </div>
+            <button class="btn-modal-action close-modal-action">Fechar</button>
+        </div>
+    </div>
+
+    <div id="modal-privacy" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header-icon">🔒</div>
+            <h2>Privacidade</h2>
+            <p>Aqui no Quiz Brabo a privacidade é levada a sério.</p>
+            <ul class="modal-list">
+                <li>1. Não coletamos seu nome.</li>
+                <li>2. Não coletamos dados bancários.</li>
+                <li>3. A única coisa que roubamos é seu tempo.</li>
+            </ul>
+            <button class="btn-modal-action close-modal-action">Entendi</button>
+        </div>
+    </div>
+
+    <div id="modal-terms" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header-icon">📜</div>
+            <h2>Termos de Uso</h2>
+            <p>Ao jogar este quiz, você concorda que:</p>
+            <ul class="modal-list">
+                <li>1. O desenvolvedor é brabo.</li>
+                <li>2. Se errar, a culpa é sua.</li>
+                <li>3. É proibido usar o Google.</li>
+                <li>4. Reclamações serão ignoradas.</li>
+            </ul>
+            <button class="btn-modal-action close-modal-action">Aceito</button>
+        </div>
+    </div>
+
     <audio id="correct-sound" src="correct.mp3"></audio>
     <audio id="incorrect-sound" src="incorect.mp3"></audio>
 
-    <script src="questions.js"></script>
     <script src="script.js"></script>
-    
 </body>
 </html>
