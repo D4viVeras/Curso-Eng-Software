@@ -5,6 +5,9 @@ Este repositório contém projetos e atividades realizadas durante o curso de **
 ## 🚀 Tecnologias Utilizadas
 
 - Python
+- HTML
+- CSS
+- JavaScript
 
 ## 🎯 Objetivo
 
